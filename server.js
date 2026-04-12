@@ -126,7 +126,7 @@ async function sendWA(phone, name, status, area, goal) {
         to: p,
         type: 'template',
         template: {
-          name: 'kasheef_welcome',
+          name: 'kasheef_lead',
           language: { code: 'ar' },
           components: [{
             type: 'body',

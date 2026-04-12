@@ -118,15 +118,23 @@ async function sendWA(phone, name, status, area, goal) {
     cold: `أهلاً ${name}! 🏠\n\nشكراً لزيارة Kasheef!\n\nلما تكون جاهز للبحث، إحنا هنا.\n\n📲 kasheef.app/download`,
   };
 
-  try {
+ try {
     await axios.post(
       `https://graph.facebook.com/v18.0/${WHATSAPP_PHONE_ID}/messages`,
       {
         messaging_product: 'whatsapp',
         to: p,
-        type: 'text',
-        text: { body: msgs[status] || msgs.warm },
+        type: 'template',
+        template: {
+          name: 'kasheef_welcome',
+          language: { code: 'ar' },
+          components: [{
+            type: 'body',
+            parameters: [{ type: 'text', text: name }]
+          }]
+        },
       },
+
       { headers: { Authorization: `Bearer ${WHATSAPP_TOKEN}` } }
     );
     db.stats.waCount++;
@@ -268,17 +276,7 @@ async function fetchMetaLead({ leadgen_id, page_id, form_id, ad_id }) {
 
     // Determine source: facebook or instagram
     const source = page_id === META_PAGE_ID ? 'facebook' : 'instagram';
-let score = "cold";
 
-if (leadData.phone && leadData.budget) {
-  score = "warm";
-}
-
-if (leadData.phone && leadData.budget && leadData.goal) {
-  score = "hot";
-}
-
-leadData.score = score;
     await processLead({
       name:    f.full_name    || f.name    || 'Meta Lead',
       phone:   f.phone_number || f.phone,

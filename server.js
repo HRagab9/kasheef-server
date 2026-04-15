@@ -32,6 +32,7 @@ app.use(cors({
     /\.lovableproject\.com$/,
     'https://kasheef.com',
     'https://www.kasheef.com',
+    'https://kasheef-lead.netlify.app',
     /localhost/,
   ],
   credentials: true,
